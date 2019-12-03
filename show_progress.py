@@ -55,7 +55,7 @@ class ShowProgress:
             progre = 100
 
         if self.row > 0:
-            string = "\033[%dA\r[*] %2.3f%%" % (self.row, progre)
+            string = "\033[%dA\r[*] %s %2.3f%%" % (self.row, self.get_progress_bar(20, progre), progre)
             string = string + ("\n" * self.row)
         elif self.row == 0:
             string = "\r[*] %2.3f%%" % progre
@@ -65,6 +65,13 @@ class ShowProgress:
         print(string, end="")
         if self.row == 0 and progre == 100:
             print()
+
+    
+    def get_progress_bar(self, width: int, progre: int):
+        block_num = width * progre / 100
+        bar = "[" + "▮" * int(block_num) + " " * (width - int(block_num)) + "]"
+        return bar
+    
 
     def show_and_progress(self):
         while True:
