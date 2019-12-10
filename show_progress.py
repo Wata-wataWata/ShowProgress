@@ -43,21 +43,21 @@ class ShowProgress:
     def next(self):
         """
         表示はしないが次に進めたい時に使う関数
-        :return: nothing
+        :return: None
         """
         self.progress += self.step
 
     def back(self):
         """
         表示はしないが前に戻したい時に使う関数
-        :return: nothing
+        :return: None
         """
         self.progress -= self.step
 
     def reset(self):
         """
         表示はせずに進みをリセットする時に使う関数
-        :return: nothing
+        :return: None
         """
         self.progress = self.start
 
@@ -155,8 +155,9 @@ class timestamp:
         if not self._doing:
             self.start = time.time()
             self._doing = True
+            return True
         else:
-            pass
+            return False
 
     def get_string_time(self, time: float):
         msecond = int((time - int(time)) * 100)
@@ -170,22 +171,20 @@ class timestamp:
         self._doing = False
 
     def get_time_elapsed(self):
-        return time.time() - self.start
+        if _doing:
+            return time.time() - self.start
+        else:
+            return False
 
 if __name__ == "__main__":
     # 何らかのデータ
     test_list = [random.random() for x in range(1000)]
-    test_list1 = [random.random() for x in range(1000)]
     # 進捗管理クラスのインスタンス作成
     # 始まりと終わりの設定を間違うと100%にたどり着かないかも
     progress = ShowProgress(1, len(test_list) + 1, step=1, row=0)
-    progress1 = ShowProgress(1, len(test_list1) + 1, row=1)
     # コルーチン関数の作成
     coru = progress.show_and_progress()
     coru1 = progress1.show_and_progress()
-
-    time_stamp = timestamp()
-    time_stamp.stamp_start_time()
 
     print("[-] Process start.")
     print("[-] Something info.")
@@ -198,5 +197,4 @@ if __name__ == "__main__":
         next(coru)          # 進める間にprintすると表示がずれるのが欠点
     else:
         print("[-] Done.")
-    
-    print(time_stamp.get_string_time(time_stamp.get_time_elapsed()))
+
